@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <MarkupCompilePass1GeneratedCodeFiles>MarkupComilePass1.GeneratedCodeFiles.txt</MarkupCompilePass1GeneratedCodeFiles>
+        <MarkupCompilationCacheFiles>WPF_MarkupCompile.cache;WPF_MarkupCompile.lref</MarkupCompilationCacheFiles>
+    </PropertyGroup>
+
+    <Import Project="PresentationBuildTasks.targets" Condition="'$(DoNotImportWinFXTargets)' != 'true'"/>
+    <Import Project="IntermediateAssemblyCompilation.targets" Condition="'$(DoNotImportWinFXTargets)' == 'true'"/>
+
+</Project>

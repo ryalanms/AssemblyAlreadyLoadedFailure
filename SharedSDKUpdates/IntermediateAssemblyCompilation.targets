@@ -1,0 +1,31 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- 'AddGeneratedFilesToCompileItem' is executed before the intermediate assembly 'Compile' target. -->
+    <!-- This target Reads the list of generated files from MarkupCompilePass1 and adds file names to    --> 
+    <!-- the list of files to be compiled.                                                               -->
+    <Target Name="AddGeneratedFilesToCompileItem" BeforeTargets="CoreCompile">
+        <Message Text="AddGeneratedFilesToCompileItem: @(Compile)"/>
+        <Message Text="IntermediateOutputPath: $(IntermediateOutputPath)"/>
+        <Message Text="Compile: @(Compile)"/>
+        <Message Text="Sources: @(Sources)"/>
+        <Message Text="FileWrites: @(FileWrites)"/>
+
+        <!-- Read the list of files generated in MarkupCompilePass1 in to 'GeneratedCodeFiles' Item -->
+        <ReadLinesFromFile
+            File="$(IntermediateOutputPath)$(MarkupCompilePass1GeneratedCodeFiles)" >
+            <Output
+                TaskParameter="Lines"
+                ItemName="GeneratedCodeFiles"/>
+        </ReadLinesFromFile>
+
+        <!-- Prevent 'IncrementalClean' from deleting generated files and intermediate assembly -->
+        <ItemGroup>
+            <Compile Include="@(GeneratedCodeFiles)"/>
+            <FileWritesShareable Include="@(GeneratedCodeFiles)"/>
+            <FileWritesShareable Include="@(MarkupCompilationCacheFiles)"/>
+            <FileWritesShareable Include="$(IntermediateOutputPath)$(TargetFileName)"/>
+        </ItemGroup>
+
+    </Target>
+
+</Project>
